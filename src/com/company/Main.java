@@ -6,5 +6,6 @@ public class Main {
 	System.out.println("our first project");
         print pr = new print();
         Vasja vs = new Vasja();
+
     }
 }
