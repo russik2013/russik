@@ -8,6 +8,6 @@ public class Main {
         Vasya vs = new Vasya();
         ClassForTest num = new ClassForTest();
         System.out.println(num.ComBackNumber());
-        num.PrintMyName();
+
     }
 }
