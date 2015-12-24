@@ -36,7 +36,7 @@ public class OK_GUI extends JFrame implements ActionListener {
                 label.setText("A?");
                 break;
             case 2:
-                label.setText("and wat you want for me? a?");
+                label.setText("and what you want for me? a?");
                 break;
             case 3:
                 label.setText("oh... fuck you. I am go out");
