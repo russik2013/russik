@@ -6,7 +6,7 @@ import javax.swing.*;
 
 public class GameFrame extends JFrame {
         public GameFrame(){
-            setLocation(150, 150);
+            setLocationRelativeTo(null);
             setDefaultCloseOperation(WindowConstants.EXIT_ON_CLOSE);
             setSize(400, 400);
             add(new Paint());
