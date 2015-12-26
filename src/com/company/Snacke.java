@@ -6,8 +6,8 @@ import java.awt.*;
 
 public class Snacke {
 
-    int x = 50;
-    int y = 50;
+    static int x = 0;
+    static int y = 0;
 
     Image head = new ImageIcon("Image/голова.jpg").getImage();
 

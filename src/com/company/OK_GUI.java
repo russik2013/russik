@@ -5,9 +5,7 @@ import java.awt.*;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
 
-/**
- * Created by basill on 24.12.15.
- */
+
 public class OK_GUI extends JFrame implements ActionListener {
     private JPanel mainPanel;
     private JButton OKButton1;
