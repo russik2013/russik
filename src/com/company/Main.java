@@ -3,7 +3,11 @@ package com.company;
 public class Main {
 
     public static void main(String[] args) {
-        new GameFrame();
-        System.out.print(Thread.currentThread().getClass());
+	System.out.println("our first project");
+        print pr = new print();
+        Vasya vs = new Vasya();
+        ClassForTest num = new ClassForTest();
+        System.out.println(num.ComBackNumber());
+
     }
 }
