@@ -17,7 +17,7 @@ public class SnakeBody {
     static {
         Image image;
         try {
-            image = ImageIO.read(new File("src/Images/body.png"));
+            image = ImageIO.read(new File("src/com/company/Images/body.png"));
         } catch (IOException e) {
             image = null;
             e.printStackTrace();

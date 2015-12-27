@@ -27,10 +27,10 @@ public class Snake {
 
     static {
         try {
-            HEAD[0] = ImageIO.read(new File("src/Images/headDown.png"));
-            HEAD[1] = ImageIO.read(new File("src/Images/headLeft.png"));
-            HEAD[2] = ImageIO.read(new File("src/Images/headRight.png"));
-            HEAD[3] = ImageIO.read(new File("src/Images/headUp.png"));
+            HEAD[0] = ImageIO.read(new File("src/com/company/Images/headDown.png"));
+            HEAD[1] = ImageIO.read(new File("src/com/company/Images/headLeft.png"));
+            HEAD[2] = ImageIO.read(new File("src/com/company/Images/headRight.png"));
+            HEAD[3] = ImageIO.read(new File("src/com/company/Images/headUp.png"));
         } catch (IOException e) {
             e.printStackTrace();
         }
