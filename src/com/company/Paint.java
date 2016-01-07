@@ -71,6 +71,7 @@ public class Paint extends JPanel {
     }
 
 
+    
 
     private class myKeyAdapter extends KeyAdapter {
         public void keyPressed(KeyEvent e) {
