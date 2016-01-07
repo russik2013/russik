@@ -11,8 +11,8 @@ public class SnakeBody {
 
     public int way;
     public Point point;
-    private Queue<Integer> wayTurn = new LinkedList<>(); //Очередь изменений напрвлений блока
-    private Queue<Point> wayPoint = new LinkedList<>(); //Очередь точек поворота
+    public Queue<Integer> wayTurn = new LinkedList<>(); //Очередь изменений напрвлений блока
+    public Queue<Point> wayPoint = new LinkedList<>(); //Очередь точек поворота
 
     static {
         Image image;
@@ -38,9 +38,11 @@ public class SnakeBody {
 
     /** Делаем шаг, если дошли до точки поворота - поворачиваем
      * и убераем точку из очереди */
+    int x;
+    int y;
     public void move(){
-        int x = point.x;
-        int y = point.y;
+        x = point.x;
+        y = point.y;
         switch (way){
             case Snake.DOWN: y += Snake.DELAY; break;
             case Snake.UP: y -= Snake.DELAY; break;
@@ -53,6 +55,12 @@ public class SnakeBody {
             wayPoint.remove();
             way = wayTurn.remove();
         }
+    }
+
+    public Rectangle getRect()
+    {
+        return new Rectangle(x, y, 16, 16);
+
     }
 
     /** Рисуемся на текущих координатах */

@@ -2,6 +2,7 @@ package com.company;
 
 
 import javax.imageio.ImageIO;
+import javax.swing.*;
 import java.awt.*;
 import java.io.File;
 import java.io.IOException;
@@ -24,7 +25,6 @@ public class Snake {
     public int headWay;
     public boolean controlWay = true;
 
-
     static {
         try {
             HEAD[0] = ImageIO.read(new File("src/Images/headDown.png"));
@@ -39,7 +39,10 @@ public class Snake {
     public Snake() {
         headWay = 0;
         length = 2;
-        headPoint = new Point(2*DELAY, 8*DELAY);
+        headPoint = new Point(2*DELAY, 11*DELAY);
+        body.add(new SnakeBody(new Point(2*DELAY, 10*DELAY), headWay));
+        body.add(new SnakeBody(new Point(2*DELAY, 9*DELAY), headWay));
+        body.add(new SnakeBody(new Point(2*DELAY, 8*DELAY), headWay));
         body.add(new SnakeBody(new Point(2*DELAY, 7*DELAY), headWay));
         body.add(new SnakeBody(new Point(2*DELAY, 6*DELAY), headWay));
         body.add(new SnakeBody(new Point(2*DELAY, 5*DELAY), headWay));
@@ -89,6 +92,42 @@ public class Snake {
         }
     }
 
+    public Rectangle getRect()
+    {
+        return new Rectangle(headPoint.x, headPoint.y, 16, 16);
+
+    }
+
+    public void bodyIncrease(){
+        SnakeBody sb = body.get(body.size() - 1);
+        SnakeBody nsb = new SnakeBody(sb.point, sb.way);
+        for (Point point: sb.wayPoint) nsb.wayPoint.add(new Point(point.x, point.y));
+        for (Integer integer: sb.wayTurn) nsb.wayTurn.add(integer);
+        System.out.println("NEW BLOCK");
+        body.add(nsb);
+        length = body.size();
+    }
+    public void  testCollisionWithYouself(){
+        int i;
+        for (i = 0; i < body.size(); ++i) {
+            if( body.get(i).getRect().intersects(getRect())){
+//                JOptionPane.showMessageDialog(null,"Себя кушать нельзя");
+//                System.exit(0);
+                break;
+        }
+        }
+        for(int j = body.size()-1; j>=i;j--) {
+
+            Paint.apples.add(new Apple(body.get(j).x, body.get(j).y));
+
+            body.remove(j);
+
+        }
+//        for(int j = i; j<body.size();j+=2) {
+//            body.remove(j);
+//
+//        }
+    }
 
 //    private void bodyIncrease(){
 //        if (length == 1) {
