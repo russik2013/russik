@@ -1,4 +1,4 @@
-package com.company;
+package Project;
 
 
 import javax.imageio.ImageIO;
@@ -15,8 +15,9 @@ public class Snake {
     public static final int RIGHT = 2;
     public static final int UP = 3;
     public static final int DELAY = 16;
-    public static final Point RESTRICTIONS_MAX = new Point(256 - DELAY, 256 - DELAY); // Верхнее ограничение
+    public static final Point RESTRICTIONS_MAX = new Point(256, 256); // Верхнее ограничение
     public static final Point RESTRICTIONS_MIN = new Point(0, 0); // Нижнее ограничение
+
 
     public Point headPoint;
     public Point tailPoint;
@@ -24,32 +25,31 @@ public class Snake {
     public ArrayList<SnakeBody> body = new ArrayList<>();
     public int headWay;
     public boolean controlWay = true;
+    public int numberOfSnake = 1; // 1 или более
+
 
     static {
         try {
-            HEAD[0] = ImageIO.read(new File("src/com/company/Images/headDown.png"));
-            HEAD[1] = ImageIO.read(new File("src/com/company/Images/headLeft.png"));
-            HEAD[2] = ImageIO.read(new File("src/com/company/Images/headRight.png"));
-            HEAD[3] = ImageIO.read(new File("src/com/company/Images/headUp.png"));
+            HEAD[0] = ImageIO.read(new File("Images/headDown.png"));
+            HEAD[1] = ImageIO.read(new File("Images/headLeft.png"));
+            HEAD[2] = ImageIO.read(new File("Images/headRight.png"));
+            HEAD[3] = ImageIO.read(new File("Images/headUp.png"));
         } catch (IOException e) {
             e.printStackTrace();
+            JOptionPane.showMessageDialog(null, "Вставь картинку для головы змеи 16x16 как " +
+                    "\nImages/headDown.png (Left/Up/Right)");
+            System.exit(404);
         }
     }
 
     public Snake() {
         headWay = 0;
-        length = 2;
-        headPoint = new Point(2*DELAY, 11*DELAY);
-        body.add(new SnakeBody(new Point(2*DELAY, 10*DELAY), headWay));
-        body.add(new SnakeBody(new Point(2*DELAY, 9*DELAY), headWay));
-        body.add(new SnakeBody(new Point(2*DELAY, 8*DELAY), headWay));
-        body.add(new SnakeBody(new Point(2*DELAY, 7*DELAY), headWay));
-        body.add(new SnakeBody(new Point(2*DELAY, 6*DELAY), headWay));
-        body.add(new SnakeBody(new Point(2*DELAY, 5*DELAY), headWay));
-        body.add(new SnakeBody(new Point(2*DELAY, 4*DELAY), headWay));
+        headPoint = new Point(2*DELAY, 4*DELAY);
         body.add(new SnakeBody(new Point(2*DELAY, 3*DELAY), headWay));
         body.add(new SnakeBody(new Point(2*DELAY, 2*DELAY), headWay));
+        length = body.size();
         tailPoint = body.get(body.size()-1).point;
+        updateBoard();
     }
 
     /** Рисуемся на текущих координатах */
@@ -61,7 +61,7 @@ public class Snake {
 
     /** Делаем шаг, определяем координаты головы в
      * соответсвии с ограничениями */
-    public void move(){
+    public void move() {
         int x = headPoint.x;
         int y = headPoint.y;
         switch (headWay){
@@ -70,10 +70,22 @@ public class Snake {
             case RIGHT: x += DELAY; break;
             case LEFT: x -= DELAY; break;
         }
-        if (x >= RESTRICTIONS_MIN.x && x <= RESTRICTIONS_MAX.x
-                && y >= RESTRICTIONS_MIN.y && y <= RESTRICTIONS_MAX.y) {
+        if (x >= RESTRICTIONS_MIN.x && x < RESTRICTIONS_MAX.x
+                && y >= RESTRICTIONS_MIN.y && y < RESTRICTIONS_MAX.y) {
+            nullBoard();
             headPoint = new Point(x,y);
-            body.forEach(SnakeBody::move);
+
+            boolean b = false;
+            if (Paint.BOARD[headPoint.x/DELAY][headPoint.y/DELAY] == -1) {
+                Paint.BOARD[headPoint.x/DELAY][headPoint.y/DELAY] = 0;
+                Paint.mainApple = null;
+                bodyIncrease();
+                b = true;
+            }
+            if (b) for (int i = 0; i < body.size() - 1; i++) body.get(i).move();
+            else body.forEach(SnakeBody::move);
+
+            updateBoard();
         }
     }
 
@@ -92,47 +104,28 @@ public class Snake {
         }
     }
 
-    public Rectangle getRect()
-    {
-        return new Rectangle(headPoint.x, headPoint.y, 16, 16);
-
+    /** Установление карты по змее*/
+    public void updateBoard() {
+        Paint.BOARD[headPoint.x/DELAY][headPoint.y/DELAY] = numberOfSnake;
+        for (SnakeBody sb: body) Paint.BOARD[sb.point.x / DELAY][sb.point.y / DELAY] = numberOfSnake;
     }
 
-    public void bodyIncrease(){
+    /** Обнуление карты по змее */
+    public void nullBoard() {
+        Paint.BOARD[headPoint.x/DELAY][headPoint.y/DELAY] = 0;
+        for (SnakeBody sb: body) Paint.BOARD[sb.point.x / DELAY][sb.point.y / DELAY] = 0;
+    }
+
+
+    private void bodyIncrease() {
         SnakeBody sb = body.get(body.size() - 1);
         SnakeBody nsb = new SnakeBody(sb.point, sb.way);
         for (Point point: sb.wayPoint) nsb.wayPoint.add(new Point(point.x, point.y));
         for (Integer integer: sb.wayTurn) nsb.wayTurn.add(integer);
-        System.out.println("NEW BLOCK");
+
         body.add(nsb);
+
         length = body.size();
     }
-    public void  testCollisionWithYouself(){
-        int i;
-        for (i = 0; i < body.size(); ++i) {
-            if( body.get(i).getRect().intersects(getRect())){
-//                JOptionPane.showMessageDialog(null,"Себя кушать нельзя");
-//                System.exit(0);
-                break;
-        }
-        }
-        for(int j = body.size()-1; j>=i;j--) {
-
-            Paint.apples.add(new Apple(body.get(j).x, body.get(j).y));
-
-            body.remove(j);
-
-        }
-//        for(int j = i; j<body.size();j+=2) {
-//            body.remove(j);
-//
-//        }
-    }
-
-//    private void bodyIncrease(){
-//        if (length == 1) {
-//            body.add(new SnakeBody())
-//        }
-//    }
 
 }

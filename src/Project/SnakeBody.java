@@ -1,6 +1,7 @@
-package com.company;
+package Project;
 
 import javax.imageio.ImageIO;
+import javax.swing.*;
 import java.awt.*;
 import java.io.File;
 import java.io.IOException;
@@ -17,10 +18,13 @@ public class SnakeBody {
     static {
         Image image;
         try {
-            image = ImageIO.read(new File("src/com/company/Images/body.png"));
+            image = ImageIO.read(new File("Images/body.png"));
         } catch (IOException e) {
             image = null;
             e.printStackTrace();
+            JOptionPane.showMessageDialog(null, "Вставь картинку для туловища змеи 16x16 как " +
+                    "\nImages/body.png");
+            System.exit(404);
         }
         body = image;
     }
@@ -38,11 +42,9 @@ public class SnakeBody {
 
     /** Делаем шаг, если дошли до точки поворота - поворачиваем
      * и убераем точку из очереди */
-    int x;
-    int y;
     public void move(){
-        x = point.x;
-        y = point.y;
+        int x = point.x;
+        int y = point.y;
         switch (way){
             case Snake.DOWN: y += Snake.DELAY; break;
             case Snake.UP: y -= Snake.DELAY; break;
@@ -55,12 +57,6 @@ public class SnakeBody {
             wayPoint.remove();
             way = wayTurn.remove();
         }
-    }
-
-    public Rectangle getRect()
-    {
-        return new Rectangle(x, y, 16, 16);
-
     }
 
     /** Рисуемся на текущих координатах */
