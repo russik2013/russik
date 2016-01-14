@@ -15,10 +15,14 @@ public class SnakeBody {
     public Queue<Integer> wayTurn = new LinkedList<>(); //Очередь изменений напрвлений блока
     public Queue<Point> wayPoint = new LinkedList<>(); //Очередь точек поворота
 
+    ///Добавил высоту и ширину
+    public static final int height = 16;
+    public static final int width = 16;
+
     static {
         Image image;
         try {
-            image = ImageIO.read(new File("Images/body.png"));
+            image = ImageIO.read(new File("src/Images/body.png"));
         } catch (IOException e) {
             image = null;
             e.printStackTrace();
@@ -62,5 +66,11 @@ public class SnakeBody {
     /** Рисуемся на текущих координатах */
     public void paint(Graphics g){
         g.drawImage(body, point.x, point.y, null);
+    }
+
+    public Rectangle getRect()
+    {
+        return new Rectangle(point.x,point.y, height, width);
+
     }
 }

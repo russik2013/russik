@@ -15,7 +15,7 @@ public class Apple {
     static {
         Image image;
         try {
-            image = ImageIO.read(new File("Images/apple.png"));
+            image = ImageIO.read(new File("src/Images/apple.png"));
         } catch (IOException e) {
             image = null;
             e.printStackTrace();

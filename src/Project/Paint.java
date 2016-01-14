@@ -5,6 +5,7 @@ import java.awt.*;
 import java.awt.event.KeyAdapter;
 import java.awt.event.KeyEvent;
 import java.awt.image.BufferedImage;
+import java.util.ArrayList;
 import java.util.Random;
 
 public class Paint extends JPanel {
@@ -14,6 +15,8 @@ public class Paint extends JPanel {
     public static final int[][] BOARD = new int[Snake.RESTRICTIONS_MAX.x / Snake.DELAY]
             [Snake.RESTRICTIONS_MAX.y / Snake.DELAY];
     public static Apple mainApple;
+
+    public static ArrayList<Apple> apples = new ArrayList<>();
 
 
     public Paint() {
@@ -31,14 +34,29 @@ public class Paint extends JPanel {
         graphics.fillRect(0,0,256,256);
 
         snake.paint(graphics);
+
+//        for(int i = 0; i < BOARD.length; i ++){
+//            for(int j = 0; j < BOARD.length; j++){
+//                System.out.print(BOARD[i][j]);
+//            }
+//            System.out.println("");
+//        }
+//        System.out.println("");
+
         if (mainApple == null) mainApple = new Apple(createPointForApple());
         mainApple.paint(graphics);
 
+        for (Apple apple :
+                apples) {
+            apple.paint(graphics);
+        }
         g.drawImage(image, 0,0, null);
     }
 
     public void moveSnake(){
         snake.move();
+        snake.CollisionWihtYourself();
+
     }
 
     private Point createPointForApple(){
